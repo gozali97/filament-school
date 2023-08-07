@@ -19,7 +19,7 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationLabel = 'Student';
+//    protected static ?string $navigationLabel = 'Student';
 
     public static function form(Form $form): Form
     {
@@ -59,6 +59,16 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('Nomor')->state(
+                    static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                    $livewire->getTablePage() - 1
+                                ))
+                        );
+                    }
+                ),
                 Tables\Columns\TextColumn::make('nis'),
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('gender'),
@@ -98,5 +108,15 @@ class StudentResource extends Resource
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if($locale == 'id'){
+            return "Siswa";
+        }else
+            return "Student";
+
     }
 }
