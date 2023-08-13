@@ -26,32 +26,32 @@ class StudentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                ->schema([
-                    Forms\Components\TextInput::make('nis')
-                    ->label('NIS')->required(),
-                    Forms\Components\TextInput::make('name')
-                    ->label('Nama Siswa')->required(),
-                    Forms\Components\Select::make('gender')
-                    ->options([
-                        "Male" =>"Male",
-                        "Female" =>"Female"
-                    ]),
-                    Forms\Components\Select::make('religion')
-                    ->options([
-                        "Islam" =>"Islam",
-                        "Katolik" =>"Katolik",
-                        "Protestan" =>"Protestan",
-                        "Hindu" =>"Hindu",
-                        "Buddha" =>"Buddha",
-                        "Khonghucu" =>"Khonghucu",
-                    ]),
-                    Forms\Components\DatePicker::make('birthday')
-                    ->label('Tanggal lahir'),
-                    Forms\Components\TextInput::make('contact')
-                        ->required(),
-                    Forms\Components\FileUpload::make('profile')
-                    ->directory('Students')
-                ])->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('nis')
+                            ->label('NIS')->required(),
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama Siswa')->required(),
+                        Forms\Components\Select::make('gender')
+                            ->options([
+                                "Male" => "Male",
+                                "Female" => "Female"
+                            ]),
+                        Forms\Components\Select::make('religion')
+                            ->options([
+                                "Islam" => "Islam",
+                                "Katolik" => "Katolik",
+                                "Protestan" => "Protestan",
+                                "Hindu" => "Hindu",
+                                "Buddha" => "Buddha",
+                                "Khonghucu" => "Khonghucu",
+                            ]),
+                        Forms\Components\DatePicker::make('birthday')
+                            ->label('Tanggal lahir'),
+                        Forms\Components\TextInput::make('contact')
+                            ->required(),
+                        Forms\Components\FileUpload::make('profile')
+                            ->directory('Students')
+                    ])->columns(2)
             ]);
     }
 
@@ -61,7 +61,7 @@ class StudentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('Nomor')->state(
                     static function (Tables\Contracts\HasTable $livewire, \stdClass $rowLoop): string {
-                        return (string) (
+                        return (string)(
                             $rowLoop->iteration +
                             ($livewire->getTableRecordsPerPage() * (
                                     $livewire->getTablePage() - 1
@@ -89,6 +89,9 @@ class StudentResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
+//            ->headerActions([
+//                Tables\Actions\CreateAction::make(),
+//            ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
             ]);
@@ -113,9 +116,9 @@ class StudentResource extends Resource
     public static function getLabel(): ?string
     {
         $locale = app()->getLocale();
-        if($locale == 'id'){
+        if ($locale == 'id') {
             return "Siswa";
-        }else
+        } else
             return "Student";
 
     }

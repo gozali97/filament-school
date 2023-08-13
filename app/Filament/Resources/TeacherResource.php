@@ -26,15 +26,15 @@ class TeacherResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                ->schema([
-                    Forms\Components\TextInput::make('nip')->required(),
-                    Forms\Components\TextInput::make('name')->required(),
-                    Forms\Components\Textarea::make('address')->required(),
-                    Forms\Components\FileUpload::make('profile')
-                        ->directory('teachers')
-                        ->required(),
+                    ->schema([
+                        Forms\Components\TextInput::make('nip')->required(),
+                        Forms\Components\TextInput::make('name')->required(),
+                        Forms\Components\Textarea::make('address')->required(),
+                        Forms\Components\FileUpload::make('profile')
+                            ->directory('teachers')
+                            ->required(),
 
-                ])->columns(2)
+                    ])->columns(2)
             ]);
     }
 
@@ -67,7 +67,7 @@ class TeacherResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ClassroomRelationManager::class
         ];
     }
 
