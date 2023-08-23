@@ -23,6 +23,8 @@ class ClassroomResource extends Resource
 
 //    protected static ?string $navigationLabel = 'Classroom';
 
+    protected static ?string $navigationGroup = 'Akademik';
+    protected static ?int $navigationSort = 13;
     public static function form(Form $form): Form
     {
         return $form

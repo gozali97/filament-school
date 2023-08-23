@@ -20,6 +20,9 @@ class PeriodeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
     protected static ?string $navigationLabel = 'Periode';
 
+    protected static ?string $navigationGroup = 'Source';
+    protected static ?int $navigationSort = 33;
+
 
     public static function form(Form $form): Form
     {
