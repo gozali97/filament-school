@@ -21,7 +21,7 @@ class ClassroomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
-    protected static ?string $navigationLabel = 'Classroom';
+//    protected static ?string $navigationLabel = 'Classroom';
 
     public static function form(Form $form): Form
     {
@@ -74,5 +74,14 @@ class ClassroomResource extends Resource
         return [
             'index' => Pages\ManageClassrooms::route('/'),
         ];
+    }
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale == 'id') {
+            return "Kelas";
+        } else
+            return "Classroom";
+
     }
 }

@@ -62,4 +62,5 @@ class PeriodeResource extends Resource
             'index' => Pages\ManagePeriodes::route('/'),
         ];
     }
+
 }

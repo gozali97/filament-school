@@ -11,6 +11,7 @@ class StudentHasClass extends Model
 
     protected $guarded = [];
 
+
     public function student()
     {
         return $this->belongsTo(Student::class, 'students_id', 'id');
