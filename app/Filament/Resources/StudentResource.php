@@ -15,6 +15,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
+use function Laravel\Prompts\select;
 
 class StudentResource extends Resource
 {
@@ -72,17 +74,41 @@ class StudentResource extends Resource
                         );
                     }
                 ),
-                Tables\Columns\TextColumn::make('nis'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('gender'),
-                Tables\Columns\TextColumn::make('religion'),
-                Tables\Columns\TextColumn::make('birthday'),
-                Tables\Columns\TextColumn::make('contact'),
-                Tables\Columns\ImageColumn::make('profile'),
+                Tables\Columns\TextColumn::make('nis')
+                    ->label('NIS')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('gender')
+                    ->label('Jenis Kelamin')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('religion')
+                    ->label('Agama')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('birthday')
+                    ->label('Tanggal Lahir')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('contact')
+                    ->label('No HP')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('profile')
+                    ->label('Foto Profile')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->formatStateUsing(fn (string $state): string => ucwords("$state")),
 
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                ->multiple()
+                ->options([
+                    'Active' =>'Active',
+                    'Off' =>'Off',
+                    'Move' =>'Move',
+                    'Grade' =>'Grade',
+                ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -90,6 +116,20 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('Change Status')
+                    ->icon('heroicon-m-check')
+                    ->requiresConfirmation()
+                    ->form([
+                        Forms\Components\Select::make('Status')
+                        ->label('Status')
+                        ->options(['Active' =>'Active', 'Off' =>'Off','Move' =>'Move','Grade' =>'Grade'])
+                        ->required(),
+                    ])
+                    ->action(function (Collection $records, array $data){
+                        return $records->each(function ($record) use ($data){
+                            Student::where('id', $record->id)->update(['status' => $data['Status']]);
+                        });
+                    }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
