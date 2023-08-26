@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use function Laravel\Prompts\select;
 
+
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
@@ -182,4 +183,5 @@ class StudentResource extends Resource
                 ImageEntry::make('profile')
             ]);
     }
+
 }

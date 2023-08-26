@@ -8,6 +8,7 @@ use App\Models\Student;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ListStudents extends ListRecords
@@ -44,5 +45,16 @@ class ListStudents extends ListRecords
 //            'name' => 'Adi',
 //            'gender' => 'Male',
 //        ]);
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => ListRecords\Tab::make(),
+            'active' => ListRecords\Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Active')),
+            'inactive' => ListRecords\Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Off')),
+        ];
     }
 }
