@@ -7,14 +7,18 @@ use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use function Laravel\Prompts\select;
 
@@ -174,13 +178,45 @@ class StudentResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('nis'),
-                TextEntry::make('name'),
-                TextEntry::make('gender'),
-                TextEntry::make('birthday'),
-                TextEntry::make('religion'),
-                TextEntry::make('contact'),
-                ImageEntry::make('profile')
+                Section::make()
+                    ->schema([
+                        Fieldset::make('Biodata')
+                        ->schema([
+                            Split::make([
+                                ImageEntry::make('profile')
+                                ->hiddenLabel()
+                                ->grow(false),
+                                Grid::make(2)
+                                ->schema([
+                                    Group::make([
+                                        TextEntry::make('nis'),
+                                        TextEntry::make('name'),
+                                        TextEntry::make('gender'),
+                                        TextEntry::make('birthday'),
+                                    ])
+                                    ->inlineLabel()
+                                    ->columns(1),
+
+                                    Group::make([
+                                        TextEntry::make('religion'),
+                                        TextEntry::make('contact'),
+                                        TextEntry::make('status')
+                                        ->badge()
+                                        ->color(fn (string $state): string => match($state){
+                                            'Active' => 'success',
+                                            'Off' => 'danger',
+                                            'Move' => 'info',
+                                            'Grade' => 'primary',
+                                        }),
+                                        ViewEntry::make('QRCode')
+                                        ->view('filament.resources.students.qrcode'),
+                                    ])
+                                    ->inlineLabel()
+                                    ->columns(1),
+                                ])
+                            ])->from('lg')
+                        ])->columns(1)
+                ])->columns(2)
             ]);
     }
 

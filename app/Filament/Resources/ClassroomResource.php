@@ -3,17 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClassroomResource\Pages;
-use App\Filament\Resources\ClassroomResource\RelationManagers;
+use App\Filament\Resources\ClassroomResource\RelationManagers\SubjectsRelationManager;
 use App\Models\Classroom;
-use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ClassroomResource extends Resource
 {
@@ -71,10 +68,19 @@ class ClassroomResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            SubjectsRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageClassrooms::route('/'),
+            'edit' => Pages\EditClassroms::route('/{record}/edit'),
+            'view' => Pages\ManageClassrooms::route('/{record}'),
         ];
     }
     public static function getLabel(): ?string
@@ -86,4 +92,5 @@ class ClassroomResource extends Resource
             return "Classroom";
 
     }
+
 }
