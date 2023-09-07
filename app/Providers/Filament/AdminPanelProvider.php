@@ -12,6 +12,7 @@ use App\Filament\Resources\PeriodeResource;
 use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\SubjectResource;
 use App\Filament\Resources\TeacherResource;
+use App\Filament\Resources\UserResource;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -102,6 +103,7 @@ class AdminPanelProvider extends PanelProvider
                             ...PeriodeResource::getNavigationItems(),
                             ...RoleResource::getNavigationItems(),
                             ...PermissionResource::getNavigationItems(),
+                            ...UserResource::getNavigationItems(),
                         ]),
                 ]);
             });

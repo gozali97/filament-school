@@ -33,6 +33,7 @@ return [
     ],
 
     'default_guard_name' => 'web',
+    'default_model_type' => 'App\Models\User',
 
     'model_filter_key' => 'return \'%\'.$key;', // Eg: 'return \'%\'.$key.'\%\';'
 

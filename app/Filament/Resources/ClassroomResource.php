@@ -11,6 +11,8 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class ClassroomResource extends Resource
 {
@@ -22,6 +24,23 @@ class ClassroomResource extends Resource
 
     protected static ?string $navigationGroup = 'Akademik';
     protected static ?int $navigationSort = 13;
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        if(Auth::user()->can('classroom'))
+            return true;
+        else
+            return false;
+    }
+
+//    public static function canViewAny(): bool
+//    {
+//        if(Auth::user()->can('classroom'))
+//            return true;
+//        else
+//            return false;
+//    }
+
     public static function form(Form $form): Form
     {
         return $form
