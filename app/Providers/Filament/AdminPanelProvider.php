@@ -2,11 +2,23 @@
 
 namespace App\Providers\Filament;
 
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use Althinect\FilamentSpatieRolesPermissions\Resources\PermissionResource;
+use Althinect\FilamentSpatieRolesPermissions\Resources\RoleResource;
+use App\Filament\Resources\CategoryNilaiResource;
+use App\Filament\Resources\ClassroomResource;
+use App\Filament\Resources\DepartementResource;
 use App\Filament\Resources\PeriodeResource;
+use App\Filament\Resources\StudentResource;
+use App\Filament\Resources\SubjectResource;
+use App\Filament\Resources\TeacherResource;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Navigation\UserMenuItem;
 use Filament\Pages;
 use Filament\Panel;
@@ -62,7 +74,37 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css');
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
+            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
+                return $builder->groups([
+                    NavigationGroup::make()
+                        ->items([
+                            NavigationItem::make('Dashboard')
+                                ->icon('heroicon-o-home')
+                                ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
+                                ->url(fn (): string => Pages\Dashboard::getUrl()),
+                        ]),
+                    NavigationGroup::make('Akademik')
+                        ->items([
+                            ...TeacherResource::getNavigationItems(),
+                            ...StudentResource::getNavigationItems(),
+                            ...SubjectResource::getNavigationItems(),
+                        ]),
+                    NavigationGroup::make('Source')
+                        ->items([
+                            ...CategoryNilaiResource::getNavigationItems(),
+                            ...ClassroomResource::getNavigationItems(),
+                            ...DepartementResource::getNavigationItems(),
+                        ]),
+                    NavigationGroup::make('Setting')
+                        ->items([
+                            ...PeriodeResource::getNavigationItems(),
+                            ...RoleResource::getNavigationItems(),
+                            ...PermissionResource::getNavigationItems(),
+                        ]),
+                ]);
+            });
     }
 
     public function boot(): void{
