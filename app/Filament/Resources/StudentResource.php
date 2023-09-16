@@ -20,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
+use Forms\Components\Card;
 use function Laravel\Prompts\select;
 
 
@@ -37,7 +38,7 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Card::make()
                     ->schema([
                         Forms\Components\TextInput::make('nis')
                             ->label('NIS')->required(),
